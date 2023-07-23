@@ -12,6 +12,4 @@ func TestMinMax(t *testing.T) {
 	if min != 1 && max != 5 {
 		t.Error("Error getting min and max values")
 	}
-	// t.Error("Just a test")
-
 }

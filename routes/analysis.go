@@ -46,20 +46,20 @@ func HandleSSE(writer http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	dictionaryEnSv := make(map[int]pkg.Data)
+	rawDataDictionary := make(map[int]pkg.Data)
 	for i, dataString := range rawDataArray {
 		var data pkg.Data
 		if err := json.Unmarshal([]byte(dataString[6:]), &data); err != nil {
 			log.Printf("Error parsing data: %v\n", err)
 			continue
 		} else {
-			dictionaryEnSv[i] = data
+			rawDataDictionary[i] = data
 		}
 	}
 
 	writer.Header().Set("Content-Type", "application/json")
 	writer.Header().Set("Access-Control-Allow-Origin", "*")
-	aggregateResult := pkg.AggResult(dictionaryEnSv, dimensionStr)
+	aggregateResult := pkg.AggResult(rawDataDictionary, dimensionStr)
 	aggregateResultJson, err := json.Marshal(aggregateResult)
 	writer.Write(aggregateResultJson)
 }
